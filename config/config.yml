@@ -1,0 +1,11 @@
+server:
+  port: ":5009"
+
+database:
+  uri: "mongodb://localhost:27017"
+  Name:"Blogs"
+ 
+
+jwt:
+  secret: "your_secret_key"
+  expiration_hours: 24
