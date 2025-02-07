@@ -31,7 +31,7 @@ func CreateJwtToken(userID string) (string, error) {
 }
 
 // JWT Middleware with Expiration Handling
-func authjwt(Next http.Handler) http.Handler {
+func AuthJWT(Next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {

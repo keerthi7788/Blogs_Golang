@@ -3,7 +3,7 @@ server:
 
 database:
   uri: "mongodb://localhost:27017"
-  Name:"Blogs"
+  # Name:"Blogs"
  
 
 jwt:

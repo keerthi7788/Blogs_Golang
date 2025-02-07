@@ -4,7 +4,6 @@ import (
 	"Blogs/config"
 	"Blogs/http"
 	"Blogs/http/handlers"
-	"Blogs/http/middleware"
 	"Blogs/repositories"
 	"Blogs/service"
 	"context"
@@ -53,8 +52,8 @@ func main() {
 	userHandler := handlers.NewUserHandlers(userService)
 	postHandler := handlers.NewpostHandlers(postService)
 	commentHandler := handlers.NewCommentHandlers(commentService)
-	// middleware
-	middleware:=middleware.CreateJwtToken(repo)
+	// middleware (remove unused variable)
+	// middleware.CreateJwtToken(repo)
 
 	// Create the HTTP server instance
 	server := http.NewServer(cfg, logger, userHandler, postHandler, commentHandler)
