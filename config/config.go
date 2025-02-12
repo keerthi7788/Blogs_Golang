@@ -4,7 +4,12 @@ import (
 	"log"
 	"os"
 
+	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/yaml.v2"
+)
+
+var (
+	db *mongo.Database
 )
 
 type Config struct {
@@ -22,7 +27,7 @@ type Config struct {
 }
 
 func LoadConfig() *Config {
-	file, err := os.ReadFile("config/config.yml")
+	file, err := os.ReadFile("../../config/config.yml")
 	if err != nil {
 		log.Fatalf("Failed to read config file: %v", err)
 	}
@@ -34,3 +39,15 @@ func LoadConfig() *Config {
 
 	return &cfg
 }
+
+// GetDB returns the MongoDB database instance
+// func GetDB() *mongo.Database {
+// 	if db == nil {
+// 		ConnectDB()
+// 	}
+// 	return db
+// }
+
+// func ConnectDB() {
+// 	panic("unimplemented")
+// }

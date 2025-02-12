@@ -128,3 +128,14 @@ func (h *UserHandler) UpdateUserByID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&user)
 
 }
+func (h *UserHandler) GetUserByEmail(w http.ResponseWriter, r *http.Request) {
+	var users modals.Users
+	users, err := h.service.GetUserByEmail(r.Context(), users.Email)
+	if err != nil {
+		http.Error(w, "unable to delete the users", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(&users)
+
+}

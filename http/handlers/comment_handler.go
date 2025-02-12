@@ -25,7 +25,7 @@ func (h *CommentHandler) CreateComment(w http.ResponseWriter, r *http.Request) {
 	}
 	id, err := h.service.CreateComment(r.Context(), comments)
 	if err != nil {
-		http.Error(w, "unable to crete the user", http.StatusBadRequest)
+		http.Error(w, "unable to crete thecommant", http.StatusBadRequest)
 	}
 	w.Header().Set("Content-type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"id": id.ID.Hex()})

@@ -14,3 +14,5 @@ func RequestLogger(next http.Handler) http.Handler {
 		log.Printf("[%s] %s %s %s", r.Method, r.RequestURI, r.RemoteAddr, time.Since(start))
 	})
 }
+
+// Login Middleware

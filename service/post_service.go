@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 type PostService interface {
@@ -18,7 +20,8 @@ type PostService interface {
 	UpdateAllPosts(ctx context.Context, id string, updateAllPosts modals.Post) (modals.Post, error)
 }
 type PostServ struct {
-	repo repositories.Postrepositor
+	repo   repositories.Postrepositor
+	Logger zap.Logger
 }
 
 // GetAllPosts implements PostService.
@@ -53,6 +56,7 @@ func (s *PostServ) GetPostByID(ctx context.Context, id string) (modals.Post, err
 
 	users, err := s.repo.GetPostByID(ctx, id)
 	if err != nil {
+
 		return modals.Post{}, fmt.Errorf("unable to find the user %d", err)
 
 	}

@@ -3,6 +3,7 @@ package service
 import (
 	"Blogs/modals"
 	"Blogs/repositories"
+	"Blogs/utils"
 	"context"
 	"fmt"
 
@@ -17,6 +18,7 @@ type UserService interface {
 	UpdateUserDetails(ctx context.Context, id string, UpdatedDetails modals.Users) (modals.Users, error)
 	DeleteUserByID(ctx context.Context, id string) (modals.Users, error)
 	DeleteAllUsers(ctx context.Context) ([]modals.Users, error)
+	GetUserByEmail(ctx context.Context, email string) (modals.Users, error)
 }
 type UserServ struct {
 	repo repositories.UserRepository
@@ -29,6 +31,12 @@ func NewUserService(repo repositories.UserRepository) *UserServ {
 
 }
 func (s *UserServ) CreateUser(ctx context.Context, user modals.Users) (primitive.ObjectID, error) {
+	var existingUser modals.Users
+	_, err := s.repo.GetUserByEmail(ctx, existingUser.Email)
+	if err == nil {
+		// User already exists, return an error
+		return primitive.ObjectID{}, fmt.Errorf("user with email %s already exists", user.Email)
+	}
 	results, err := s.repo.CreateUser(ctx, user)
 	if err != nil {
 		fmt.Println("eror while creating user in service", err)
@@ -87,4 +95,20 @@ func (s *UserServ) DeleteAllUsers(ctx context.Context) ([]modals.Users, error) {
 		return []modals.Users{}, fmt.Errorf("unable to deleteAll the user %d", err)
 	}
 	return deletedUser, nil
+}
+func (s *UserServ) GetUserByEmail(ctx context.Context, email string) (modals.Users, error) {
+	// Fetch user from repository
+	users, err := s.repo.GetUserByEmail(ctx, email)
+	if err != nil {
+		return modals.Users{}, fmt.Errorf("unable to get the user by email: %v", err)
+	}
+
+	// Generate JWT token
+	_, err = utils.CreateJwtToken(email)
+	if err != nil {
+		return modals.Users{}, fmt.Errorf("unable to generate JWT token: %v", err)
+	}
+
+	// Return user details and token
+	return users, nil
 }

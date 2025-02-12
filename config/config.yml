@@ -3,8 +3,7 @@ server:
 
 database:
   uri: "mongodb://localhost:27017"
-  # Name:"Blogs"
- 
+  name: "Blogs"  
 
 jwt:
   secret: "your_secret_key"

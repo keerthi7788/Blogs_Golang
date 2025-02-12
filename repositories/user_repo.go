@@ -18,6 +18,7 @@ type UserRepository interface {
 	UpdateUserDetails(ctx context.Context, id string, UpdatedDetails modals.Users) (modals.Users, error)
 	DeleteUserByID(ctx context.Context, id string) (modals.Users, error)
 	DeleteAllUsers(ctx context.Context) ([]modals.Users, error)
+	GetUserByEmail(ctx context.Context, email string) (modals.Users, error)
 }
 
 type UserRepo struct {
@@ -149,4 +150,13 @@ func (r *UserRepo) DeleteAllUsers(ctx context.Context) ([]modals.Users, error) {
 		return []modals.Users{}, fmt.Errorf("unable to deleteAll the user %d", err)
 	}
 	return deletedUser, nil
+}
+func (r *UserRepo) GetUserByEmail(ctx context.Context, email string) (modals.Users, error) {
+	collection := r.Client.Database(r.DatabaseName).Collection(r.CollectionName)
+	var user modals.Users
+	err := collection.FindOne(ctx, bson.M{"email": email}).Decode(&user)
+	if err != nil {
+		return modals.Users{}, err
+	}
+	return user, nil
 }

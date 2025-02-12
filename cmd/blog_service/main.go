@@ -52,11 +52,12 @@ func main() {
 	userHandler := handlers.NewUserHandlers(userService)
 	postHandler := handlers.NewpostHandlers(postService)
 	commentHandler := handlers.NewCommentHandlers(commentService)
-	// middleware (remove unused variable)
+	Authandlers := handlers.NewAuthHandlers(userService)
+	// middleware (remove unused variable)se
 	// middleware.CreateJwtToken(repo)
 
 	// Create the HTTP server instance
-	server := http.NewServer(cfg, logger, userHandler, postHandler, commentHandler)
+	server := http.NewServer(cfg, logger, userHandler, postHandler, commentHandler, (*handlers.Authhandler)(Authandlers))
 
 	// Start the server
 	addr := cfg.Server.Port
